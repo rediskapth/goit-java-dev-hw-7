@@ -17,6 +17,13 @@
                     <input type="text" class="form-control" id="skillLanguage" placeholder="Enter skill language" name="skillLanguage"><br>
                     <label for="skillSkill">Skill skill:</label><br>
                     <input type="text" class="form-control" id="skillSkill" placeholder="Enter skill skill (junior, middle, etc.)" name="skillSkill"><br>
+
+                    <label for="developerId">Select developer:</label><br>
+                    <c:forEach items="${developers}" var="developer">
+                        <input type="checkbox" name="developerId" value="${developer.id}">
+                        <c:out value="${developer.name}"/>
+                        <c:out value="${developer.age}"/><br>
+                    </c:forEach>
                 </div>
                     <input type="submit" value="Submit">
             </form>

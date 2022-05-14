@@ -17,6 +17,14 @@
                     <input type="text" class="form-control" id="companyName" placeholder="Enter company name" name="companyName"><br>
                     <label for="companyLocation">Company location:</label><br>
                     <input type="text" class="form-control" id="companyLocation" placeholder="Enter company location" name="companyLocation"><br>
+
+                    <label for="projectId">Select project:</label><br>
+                    <c:forEach items="${projects}" var="project">
+                        <input type="checkbox" name="projectId" value="${project.id}">
+                        <c:out value="${project.name}"/>
+                        <c:out value="${project.description}"/>
+                        <c:out value="${project.creationDate}"/><br>
+                    </c:forEach>
                 </div>
                     <input type="submit" value="Submit">
             </form>
