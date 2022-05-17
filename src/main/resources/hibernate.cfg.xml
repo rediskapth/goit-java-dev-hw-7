@@ -12,14 +12,7 @@
         <property name="connection.password">12345</property>
         <property name="enable_lazy_load_no_trans">true</property>
 
-        <mapping class="ua.goit.model.dao.CompaniesDao"/>
-        <mapping class="ua.goit.model.dao.CustomersDao"/>
         <mapping class="ua.goit.model.dao.DevelopersDao"/>
-        <mapping class="ua.goit.model.dao.ProjectsDao"/>
         <mapping class="ua.goit.model.dao.SkillsDao"/>
-<!--        <mapping class="ua.goit.model.dao.CompaniesProjectsDao"/>-->
-<!--        <mapping class="ua.goit.model.dao.CustomersProjectsDao"/>-->
-<!--        <mapping class="ua.goit.model.dao.DevelopersProjectsDao"/>-->
-        <mapping class="ua.goit.model.dao.DevelopersSkillsDao"/>
     </session-factory>
 </hibernate-configuration>

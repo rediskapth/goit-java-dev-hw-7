@@ -3,9 +3,13 @@ package ua.goit.controller.developersServlets;
 import ua.goit.config.DatabaseManager;
 import ua.goit.config.HibernateProvider;
 import ua.goit.model.convert.DevelopersConverter;
+import ua.goit.model.convert.SkillsConverter;
 import ua.goit.model.dto.DevelopersDto;
+import ua.goit.model.dto.SkillsDto;
 import ua.goit.repository.DevelopersRepository;
+import ua.goit.repository.SkillsRepository;
 import ua.goit.service.DevelopersService;
+import ua.goit.service.SkillsService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,15 +17,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @WebServlet("/developer-updated")
 public class UpdateDeveloperServlet extends HttpServlet {
     private DevelopersService developersService;
+    private SkillsService skillsService;
 
     @Override
     public void init() throws ServletException {
         DatabaseManager dbConnector = new HibernateProvider();
-        developersService = new DevelopersService(new DevelopersConverter(), new DevelopersRepository(dbConnector));
+        developersService = new DevelopersService(new DevelopersRepository(dbConnector), new DevelopersConverter(new SkillsConverter()));
+        skillsService = new SkillsService(new SkillsConverter(), new SkillsRepository(dbConnector));
     }
 
     @Override
@@ -31,7 +40,7 @@ public class UpdateDeveloperServlet extends HttpServlet {
         int developerAge = Integer.parseInt(req.getParameter("developerAge"));
         int developerSalary = Integer.parseInt(req.getParameter("developerSalary"));
         DevelopersDto developersDto = new DevelopersDto();
-        developersDto.setDeveloperId(Integer.parseInt(developerId));
+        developersDto.setId(Integer.parseInt(developerId));
         try {
             developersService.findById(Integer.parseInt(developerId));
         } catch (Exception e) {
@@ -42,6 +51,14 @@ public class UpdateDeveloperServlet extends HttpServlet {
         developersDto.setName(developerName);
         developersDto.setAge(developerAge);
         developersDto.setSalary(developerSalary);
+
+        if (req.getParameterValues("skillId") != null) {
+            Set<Integer> skillIds = Arrays.stream(req.getParameterValues("skillId"))
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toSet());
+            Set<SkillsDto> skills = skillsService.findByIds(skillIds);
+            developersDto.setSkills(skills);
+        }
         developersService.update(developersDto);
         req.getRequestDispatcher("/WEB-INF/html/developersJSP/developerUpdated.jsp").forward(req, resp);
     }

@@ -2,15 +2,18 @@ package ua.goit.model.dao;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "skills")
 public class SkillsDao {
-    private Integer skillId;
+    private Integer id;
     private String language;
     private String skill;
+    private Set<DevelopersDao> developers;
 
-    public SkillsDao(Integer skillId, String language, String skill) {
-        this.skillId = skillId;
+    public SkillsDao(Integer id, String language, String skill) {
+        this.id = id;
         this.language = language;
         this.skill = skill;
     }
@@ -20,13 +23,12 @@ public class SkillsDao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "skill_id")
-    public Integer getSkillId() {
-        return skillId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setSkillId(Integer skillId) {
-        this.skillId = skillId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Column(name = "language")
@@ -47,10 +49,15 @@ public class SkillsDao {
         this.skill = skill;
     }
 
+    @ManyToMany(mappedBy = "skills")
+    public void setDevelopers(Set<DevelopersDao> developers) {
+        this.developers = developers;
+    }
+
     @Override
     public String toString() {
         return "SkillsDao{" +
-                "skillId=" + skillId +
+                "id=" + id +
                 ", language='" + language + '\'' +
                 ", skill='" + skill + '\'' +
                 '}';

@@ -28,7 +28,7 @@ public class DeleteSkillServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String skillId = req.getParameter("skillId");
         SkillsDto skillsDto = new SkillsDto();
-        skillsDto.setSkillId(Integer.parseInt(skillId));
+        skillsDto.setId(Integer.parseInt(skillId));
         try {
             skillsService.findById(Integer.parseInt(skillId));
         } catch (Exception e) {

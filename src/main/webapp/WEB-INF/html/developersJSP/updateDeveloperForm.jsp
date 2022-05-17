@@ -21,6 +21,13 @@
                     <input type="number" class="form-control" id="developerAge" placeholder="Enter developer age" name="developerAge"><br>
                     <label for="developerSalary">Developer salary:</label><br>
                     <input type="number" class="form-control" id="developerSalary" placeholder="Enter developer salary" name="developerSalary"><br>
+
+                    <label for="skillId">Select skill:</label><br>
+                    <c:forEach items="${skills}" var="skill">
+                        <input type="checkbox" name="skillId" value="${skill.id}">
+                        <c:out value="${skill.language}"/>
+                        <c:out value="${skill.skill}"/><br>
+                    </c:forEach>
                 </div>
                     <input type="submit" value="Submit">
             </form>

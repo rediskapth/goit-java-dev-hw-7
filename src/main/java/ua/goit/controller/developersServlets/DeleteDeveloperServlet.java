@@ -3,6 +3,7 @@ package ua.goit.controller.developersServlets;
 import ua.goit.config.DatabaseManager;
 import ua.goit.config.HibernateProvider;
 import ua.goit.model.convert.DevelopersConverter;
+import ua.goit.model.convert.SkillsConverter;
 import ua.goit.model.dto.DevelopersDto;
 import ua.goit.repository.DevelopersRepository;
 import ua.goit.service.DevelopersService;
@@ -21,14 +22,14 @@ public class DeleteDeveloperServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         DatabaseManager dbConnector = new HibernateProvider();
-        developersService = new DevelopersService(new DevelopersConverter(), new DevelopersRepository(dbConnector));
+        developersService = new DevelopersService(new DevelopersRepository(dbConnector), new DevelopersConverter(new SkillsConverter()));
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String developerId = req.getParameter("developerId");
         DevelopersDto developersDto = new DevelopersDto();
-        developersDto.setDeveloperId(Integer.parseInt(developerId));
+        developersDto.setId(Integer.parseInt(developerId));
         try {
             developersService.findById(Integer.parseInt(developerId));
         } catch (Exception e) {

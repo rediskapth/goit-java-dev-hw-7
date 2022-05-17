@@ -7,6 +7,7 @@ import ua.goit.model.dao.DevelopersDao;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class DevelopersRepository implements Repository<DevelopersDao> {
 
@@ -34,13 +35,25 @@ public class DevelopersRepository implements Repository<DevelopersDao> {
     @Override
     public Optional<DevelopersDao> findById(int id) {
         try (Session session = manager.getSession()) {
-            return session.createQuery("FROM DevelopersDao dd WHERE dd.developerId=:developerId", DevelopersDao.class)
-                    .setParameter("developerId", id)
+            return session.createQuery("FROM DevelopersDao dd WHERE dd.id=:id", DevelopersDao.class)
+                    .setParameter("id", id)
                     .uniqueResultOptional();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return Optional.empty();
+    }
+
+    @Override
+    public List<DevelopersDao> findByIds(Set<Integer> id) {
+        try (Session session = manager.getSession()) {
+            return session.createQuery("FROM DevelopersDao dd WHERE dd.id IN :ids", DevelopersDao.class)
+                    .setParameter("ids", id)
+                    .list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return List.of();
     }
 
     @Override
@@ -73,15 +86,7 @@ public class DevelopersRepository implements Repository<DevelopersDao> {
         Transaction transaction = null;
         try (Session session = manager.getSession()) {
             transaction = session.beginTransaction();
-            session.createQuery("DELETE FROM DevelopersSkillsDao dsd WHERE dsd.developerId=:developerId")
-                    .setParameter("developerId", developersDao.getDeveloperId())
-                    .executeUpdate();
-            session.createQuery("DELETE FROM DevelopersProjectsDao dpd WHERE dsd.developerId=:developerId")
-                    .setParameter("developerId", developersDao.getDeveloperId())
-                    .executeUpdate();
-            session.createQuery("DELETE FROM DevelopersDao dd WHERE dd.developerId=:developerId")
-                    .setParameter("developerId", developersDao.getDeveloperId())
-                    .executeUpdate();
+            session.remove(developersDao);
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();

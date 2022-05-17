@@ -30,7 +30,7 @@ public class UpdateSkillServlet extends HttpServlet {
         String skillLanguage = req.getParameter("skillLanguage");
         String skillSkill = req.getParameter("skillSkill");
         SkillsDto skillsDto = new SkillsDto();
-        skillsDto.setSkillId(Integer.parseInt(skillId));
+        skillsDto.setId(Integer.parseInt(skillId));
         try {
             skillsService.findById(Integer.parseInt(skillId));
         } catch (Exception e) {

@@ -7,7 +7,7 @@ public class SkillsConverter {
 
     public SkillsDto convert(SkillsDao skillsDao) {
         SkillsDto dto = new SkillsDto();
-        dto.setSkillId(skillsDao.getSkillId());
+        dto.setId(skillsDao.getId());
         dto.setLanguage(skillsDao.getLanguage());
         dto.setSkill(skillsDao.getSkill());
         return dto;
@@ -15,7 +15,7 @@ public class SkillsConverter {
 
     public SkillsDao convert(SkillsDto skillsDto) {
         SkillsDao dao = new SkillsDao();
-        dao.setSkillId(skillsDto.getSkillId());
+        dao.setId(skillsDto.getId());
         dao.setLanguage(skillsDto.getLanguage());
         dao.setSkill(skillsDto.getSkill());
         return dao;

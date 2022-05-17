@@ -1,12 +1,15 @@
 package ua.goit.model.dto;
 
+import java.util.Set;
+
 public class SkillsDto {
-    private Integer skillId;
+    private Integer id;
     private String language;
     private String skill;
+    private Set<DevelopersDto> developers;
 
-    public SkillsDto(Integer skillId, String language, String skill) {
-        this.skillId = skillId;
+    public SkillsDto(Integer id, String language, String skill) {
+        this.id = id;
         this.language = language;
         this.skill = skill;
     }
@@ -14,12 +17,12 @@ public class SkillsDto {
     public SkillsDto() {
     }
 
-    public Integer getSkillId() {
-        return skillId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setSkillId(Integer skillId) {
-        this.skillId = skillId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getLanguage() {
@@ -38,10 +41,18 @@ public class SkillsDto {
         this.skill = skill;
     }
 
+    public Set<DevelopersDto> getDevelopers() {
+        return developers;
+    }
+
+    public void setDevelopers(Set<DevelopersDto> developers) {
+        this.developers = developers;
+    }
+
     @Override
     public String toString() {
         return "SkillsDto{" +
-                "skillId=" + skillId +
+                "id=" + id +
                 ", language='" + language + '\'' +
                 ", skill='" + skill + '\'' +
                 '}';

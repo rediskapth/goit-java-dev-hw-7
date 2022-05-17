@@ -2,16 +2,19 @@ package ua.goit.model.dao;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "developers")
 public class DevelopersDao {
-    private Integer developerId;
+    private Integer id;
     private String name;
     private Integer age;
     private Integer salary;
+    private Set<SkillsDao> skills;
 
-    public DevelopersDao(Integer developerId, String name, Integer age, Integer salary) {
-        this.developerId = developerId;
+    public DevelopersDao(Integer id, String name, Integer age, Integer salary) {
+        this.id = id;
         this.name = name;
         this.age = age;
         this.salary = salary;
@@ -22,13 +25,12 @@ public class DevelopersDao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "developer_id")
-    public Integer getDeveloperId() {
-        return developerId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setDeveloperId(Integer developerId) {
-        this.developerId = developerId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Column(name = "name")
@@ -58,10 +60,24 @@ public class DevelopersDao {
         this.salary = salary;
     }
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinTable(
+            name = "developers_skills",
+            joinColumns = {@JoinColumn(name = "developer_id")},
+            inverseJoinColumns = {@JoinColumn(name = "skill_id")}
+    )
+    public Set<SkillsDao> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(Set<SkillsDao> skills) {
+        this.skills = skills;
+    }
+
     @Override
     public String toString() {
         return "DevelopersDao{" +
-                "developerId=" + developerId +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", salary=" + salary +

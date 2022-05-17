@@ -7,9 +7,9 @@ import ua.goit.model.dao.SkillsDao;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class SkillsRepository implements Repository<SkillsDao> {
-
     private final DatabaseManager manager;
 
     public SkillsRepository(DatabaseManager manager) {
@@ -34,14 +34,27 @@ public class SkillsRepository implements Repository<SkillsDao> {
     @Override
     public Optional<SkillsDao> findById(int id) {
         try (Session session = manager.getSession()) {
-            return session.createQuery("FROM SkillsDao sd WHERE sd.skillId=:skillId", SkillsDao.class)
-                    .setParameter("skillId", id)
+            return session.createQuery("FROM SkillsDao sd WHERE sd.id=:id", SkillsDao.class)
+                    .setParameter("id", id)
                     .uniqueResultOptional();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return Optional.empty();
     }
+
+    @Override
+    public List<SkillsDao> findByIds(Set<Integer> id) {
+        try (Session session = manager.getSession()) {
+            return session.createQuery("FROM SkillsDao sd WHERE sd.id IN :ids", SkillsDao.class)
+                    .setParameter("ids", id)
+                    .list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return List.of();
+    }
+
 
     @Override
     public List<SkillsDao> findAll() {
@@ -68,18 +81,12 @@ public class SkillsRepository implements Repository<SkillsDao> {
         }
     }
 
-
     @Override
     public void remove(SkillsDao skillsDao) {
         Transaction transaction = null;
         try (Session session = manager.getSession()) {
             transaction = session.beginTransaction();
-            session.createQuery("DELETE FROM DevelopersSkillsDao dsd WHERE dsd.skillId=:skillId")
-                    .setParameter("skillId", skillsDao.getSkillId())
-                    .executeUpdate();
-            session.createQuery("DELETE FROM SkillsDao sd WHERE sd.skillId=:skillId")
-                    .setParameter("skillId", skillsDao.getSkillId())
-                    .executeUpdate();
+            session.remove(skillsDao);
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
